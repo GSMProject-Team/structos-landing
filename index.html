@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StructOS — LIRA → Tekla КМ автоматизация</title>
+<meta name="description" content="StructOS автоматизирует передачу армирования и сечений из ЛИРА-САПР в Tekla Structures — от расчёта до КМ-чертежей.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏗️</text></svg>">
+<style>
+  :root{
+    --bg:#0b0d12; --bg-panel:#12151c; --border:#232733;
+    --text:#e8eaf0; --text-dim:#9aa1b2; --accent:#5b8cff; --accent-dim:#2c3a63;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f7f8fa; --bg-panel:#ffffff; --border:#e3e6ec; --text:#12151c; --text-dim:#565e6f; --accent:#3760d6; --accent-dim:#e4eaff; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px}
+  header.hero{padding:96px 0 72px;border-bottom:1px solid var(--border)}
+  .eyebrow{color:var(--accent);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:13px;margin:0 0 16px}
+  h1{font-size:clamp(32px,5vw,52px);line-height:1.12;margin:0 0 20px;font-weight:700}
+  .lede{font-size:19px;color:var(--text-dim);max-width:640px;margin:0 0 32px}
+  .cta{display:inline-flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:13px 24px;border-radius:8px;font-weight:600;text-decoration:none;font-size:15px}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-ghost{border:1px solid var(--border);color:var(--text)}
+  section{padding:64px 0;border-bottom:1px solid var(--border)}
+  section:last-of-type{border-bottom:none}
+  h2{font-size:26px;margin:0 0 36px}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+  .step{background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:24px}
+  .step .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;
+    background:var(--accent-dim);color:var(--accent);font-weight:700;font-size:14px;margin-bottom:14px}
+  .step h3{margin:0 0 8px;font-size:16px}
+  .step p{margin:0;color:var(--text-dim);font-size:14px}
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media (max-width:640px){.fit{grid-template-columns:1fr}}
+  .fit .col{background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:24px}
+  .fit h3{margin:0 0 14px;font-size:15px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.03em}
+  .fit ul{margin:0;padding-left:20px}
+  .fit li{margin-bottom:10px}
+  .contact-box{background:var(--bg-panel);border:1px solid var(--border);border-radius:14px;padding:40px;text-align:center}
+  .contact-box p{color:var(--text-dim);margin:0 0 22px}
+  footer{padding:32px 0;color:var(--text-dim);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Инженерная автоматизация</p>
+    <h1>ЛИРА-САПР → Tekla Structures без ручного переноса</h1>
+    <p class="lede">StructOS читает результаты расчёта и подобранное армирование прямо из ЛИРА, строит геометрию
+      и КМ-чертежи в Tekla через Open API — без экспорта в промежуточные форматы и без ручного ввода сечений.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="mailto:gsm.1095.z@gmail.com?subject=StructOS%20—%20демо">Запросить демо</a>
+      <a class="btn btn-ghost" href="#pipeline">Как это работает</a>
+    </div>
+  </header>
+
+  <section id="pipeline">
+    <h2>Конвейер ЛИРА → Tekla</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3>Расчёт в ЛИРА</h3><p>Усилия, РСУ, подбор армирования и сечений читаются напрямую из модели.</p></div>
+      <div class="step"><span class="n">2</span><h3>Сопоставление</h3><p>Марки элементов ЛИРА связываются с объектами Tekla — балки, колонны, плиты.</p></div>
+      <div class="step"><span class="n">3</span><h3>Построение в Tekla</h3><p>Геометрия, профили и армирование создаются через Open API, in-process.</p></div>
+      <div class="step"><span class="n">4</span><h3>КМ-чертежи</h3><p>Спецификации, развёртки, оформление по стандарту — на выходе готовый комплект КМ.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Кому подходит</h2>
+    <div class="fit">
+      <div class="col">
+        <h3>Подходит</h3>
+        <ul>
+          <li>Проектные бюро, которые считают в ЛИРА и оформляют в Tekla</li>
+          <li>Металлоконструкции с повторяющимся циклом расчёт → КМ</li>
+          <li>Команды, где перенос сечений и армирования вручную — узкое место</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3>Как поставляется</h3>
+        <ul>
+          <li>Локальный MCP-сервер (<code>pip install</code>) — работает на машине инженера, рядом с ЛИРА и Tekla</li>
+          <li>Годовой B2B-договор с проектным бюро, оплата по счёту</li>
+          <li>Без облачной загрузки моделей — всё считается локально</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="contact-box">
+      <h2 style="margin-bottom:12px">Демо-доступ</h2>
+      <p>Покажем конвейер на вашей модели. Договор и счёт — после демо, без каких-либо предоплат картой.</p>
+      <a class="btn btn-primary" href="mailto:gsm.1095.z@gmail.com?subject=StructOS%20—%20демо">gsm.1095.z@gmail.com</a>
+    </div>
+  </section>
+</div>
+
+<footer>© 2026 StructOS</footer>
+
+</body>
+</html>
