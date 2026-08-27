@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>StructOS — LIRA → Tekla КМ автоматизация</title>
-<meta name="description" content="StructOS автоматизирует передачу армирования и сечений из ЛИРА-САПР в Tekla Structures — от расчёта до КМ-чертежей.">
+<title>StructOS — инженерная автоматизация КЖ/КМ</title>
+<meta name="description" content="StructOS связывает ЛИРА-САПР, Tekla Structures, Revit, AutoCAD и IDEA StatiCa напрямую — расчёт, армирование, сечения и чертежи без ручного переноса между программами.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏗️</text></svg>">
 <style>
   :root{
@@ -18,24 +18,31 @@
   body{margin:0;background:var(--bg);color:var(--text);
     font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     line-height:1.55}
-  .wrap{max-width:920px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
   header.hero{padding:96px 0 72px;border-bottom:1px solid var(--border)}
   .eyebrow{color:var(--accent);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:13px;margin:0 0 16px}
-  h1{font-size:clamp(32px,5vw,52px);line-height:1.12;margin:0 0 20px;font-weight:700}
-  .lede{font-size:19px;color:var(--text-dim);max-width:640px;margin:0 0 32px}
+  h1{font-size:clamp(32px,5vw,50px);line-height:1.14;margin:0 0 20px;font-weight:700}
+  .lede{font-size:19px;color:var(--text-dim);max-width:680px;margin:0 0 32px}
   .cta{display:inline-flex;gap:14px;flex-wrap:wrap}
   .btn{display:inline-block;padding:13px 24px;border-radius:8px;font-weight:600;text-decoration:none;font-size:15px}
   .btn-primary{background:var(--accent);color:#fff}
   .btn-ghost{border:1px solid var(--border);color:var(--text)}
   section{padding:64px 0;border-bottom:1px solid var(--border)}
   section:last-of-type{border-bottom:none}
-  h2{font-size:26px;margin:0 0 36px}
+  h2{font-size:26px;margin:0 0 10px}
+  .section-note{color:var(--text-dim);font-size:15px;margin:0 0 32px;max-width:640px}
   .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
   .step{background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:24px}
   .step .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;
     background:var(--accent-dim);color:var(--accent);font-weight:700;font-size:14px;margin-bottom:14px}
   .step h3{margin:0 0 8px;font-size:16px}
   .step p{margin:0;color:var(--text-dim);font-size:14px}
+  .modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .module{background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:24px}
+  .module h3{margin:0 0 10px;font-size:16px;display:flex;align-items:center;gap:10px}
+  .module .tag{font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--accent);
+    background:var(--accent-dim);border-radius:5px;padding:3px 8px}
+  .module p{margin:0;color:var(--text-dim);font-size:14px}
   .fit{display:grid;grid-template-columns:1fr 1fr;gap:24px}
   @media (max-width:640px){.fit{grid-template-columns:1fr}}
   .fit .col{background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:24px}
@@ -52,17 +59,38 @@
 <div class="wrap">
   <header class="hero">
     <p class="eyebrow">Инженерная автоматизация</p>
-    <h1>ЛИРА-САПР → Tekla Structures без ручного переноса</h1>
-    <p class="lede">StructOS читает результаты расчёта и подобранное армирование прямо из ЛИРА, строит геометрию
-      и КМ-чертежи в Tekla через Open API — без экспорта в промежуточные форматы и без ручного ввода сечений.</p>
+    <h1>Расчёт → армирование → чертежи, без ручного переноса между программами</h1>
+    <p class="lede">StructOS напрямую связывает ЛИРА-САПР, Tekla Structures, Revit, AutoCAD и IDEA StatiCa:
+      читает усилия и подобранные сечения из расчёта, строит геометрию и оформляет КЖ/КМ-чертежи —
+      без экспорта в промежуточные форматы и без ручного дублирования данных.</p>
     <div class="cta">
       <a class="btn btn-primary" href="mailto:gsm.1095.z@gmail.com?subject=StructOS%20—%20демо">Запросить демо</a>
-      <a class="btn btn-ghost" href="#pipeline">Как это работает</a>
+      <a class="btn btn-ghost" href="#modules">Что покрывает</a>
     </div>
   </header>
 
+  <section id="modules">
+    <h2>Что покрывает StructOS</h2>
+    <p class="section-note">Не одна интеграция, а связующий слой между программами, которые проектное бюро уже использует.</p>
+    <div class="modules">
+      <div class="module"><h3>ЛИРА-САПР <span class="tag">расчёт</span></h3>
+        <p>Усилия, РСУ/РСН, подбор сечений и армирования, устойчивость, сейсмика — чтение прямо из модели, без выгрузки в текст.</p></div>
+      <div class="module"><h3>Tekla Structures <span class="tag">КМ/КМД</span></h3>
+        <p>Геометрия, узлы, профилировка через Open API; спецификации, развёртки, нумерация, экспорт NC.</p></div>
+      <div class="module"><h3>Revit <span class="tag">КЖ</span></h3>
+        <p>Армирование, штампы по ГОСТ 21.101, листы, семейства, экспорт IFC.</p></div>
+      <div class="module"><h3>AutoCAD <span class="tag">чертежи</span></h3>
+        <p>Чтение и построение чертежей, оси, блоки, сопоставление со сметой и КМ.</p></div>
+      <div class="module"><h3>IDEA StatiCa <span class="tag">узлы</span></h3>
+        <p>Проверка узловых соединений (CBFEM) по усилиям из расчёта.</p></div>
+      <div class="module"><h3>Нормативы <span class="tag">СП РК / ГОСТ</span></h3>
+        <p>Поиск и применение норм СП РК, ГОСТ, Eurocode прямо в расчётном и проверочном цикле.</p></div>
+    </div>
+  </section>
+
   <section id="pipeline">
-    <h2>Конвейер ЛИРА → Tekla</h2>
+    <h2>Пример конвейера: ЛИРА → Tekla</h2>
+    <p class="section-note">Самый частый цикл в металлоконструкциях — от расчёта до готового комплекта КМ.</p>
     <div class="steps">
       <div class="step"><span class="n">1</span><h3>Расчёт в ЛИРА</h3><p>Усилия, РСУ, подбор армирования и сечений читаются напрямую из модели.</p></div>
       <div class="step"><span class="n">2</span><h3>Сопоставление</h3><p>Марки элементов ЛИРА связываются с объектами Tekla — балки, колонны, плиты.</p></div>
@@ -77,15 +105,15 @@
       <div class="col">
         <h3>Подходит</h3>
         <ul>
-          <li>Проектные бюро, которые считают в ЛИРА и оформляют в Tekla</li>
-          <li>Металлоконструкции с повторяющимся циклом расчёт → КМ</li>
+          <li>Проектные бюро, которые считают в ЛИРА и оформляют в Tekla или Revit</li>
+          <li>КЖ и металлоконструкции с повторяющимся циклом расчёт → чертежи</li>
           <li>Команды, где перенос сечений и армирования вручную — узкое место</li>
         </ul>
       </div>
       <div class="col">
         <h3>Как поставляется</h3>
         <ul>
-          <li>Локальный MCP-сервер (<code>pip install</code>) — работает на машине инженера, рядом с ЛИРА и Tekla</li>
+          <li>Локальный MCP-сервер (<code>pip install</code>) — работает на машине инженера, рядом с ЛИРА, Tekla, Revit</li>
           <li>Годовой B2B-договор с проектным бюро, оплата по счёту</li>
           <li>Без облачной загрузки моделей — всё считается локально</li>
         </ul>
