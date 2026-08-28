@@ -52,6 +52,26 @@
   .contact-box{background:var(--bg-panel);border:1px solid var(--border);border-radius:14px;padding:40px;text-align:center}
   .contact-box p{color:var(--text-dim);margin:0 0 22px}
   footer{padding:32px 0;color:var(--text-dim);font-size:13px;text-align:center}
+
+  /* ---------- mechanism diagram ---------- */
+  :root{ --local:#3f9c82; --local-dim:#dcf0e9; }
+  @media (prefers-color-scheme: light){ :root{ --local:#2f8069; --local-dim:#dcf0e9; } }
+  .diagram-frame{background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:20px 20px 6px;overflow-x:auto}
+  .diagram-frame svg{display:block;width:100%;height:auto;min-width:620px}
+  figure{margin:0}
+  figcaption{font-size:13px;color:var(--text-dim);margin-top:12px;text-align:center;max-width:64ch;margin-left:auto;margin-right:auto}
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin:16px 0 36px;font-size:12px;color:var(--text-dim)}
+  .legend .sw{display:inline-flex;align-items:center;gap:7px}
+  .legend .dot{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .channels{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-bottom:36px}
+  .channel{background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:20px;border-top:3px solid var(--accent)}
+  .channel .num{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.04em;margin-bottom:8px;display:block;text-transform:uppercase}
+  .channel h3{font-weight:600;font-size:15px;margin:0 0 8px}
+  .channel p{margin:0 0 10px;font-size:13.5px;color:var(--text-dim)}
+  .gate{font-size:11.5px;color:var(--local);background:var(--local-dim);border-radius:5px;padding:5px 9px;display:inline-block}
+  .tenet{background:var(--bg-panel);border-radius:12px;padding:22px 26px;border-left:3px solid var(--local)}
+  .tenet p{margin:0;font-size:14.5px;color:var(--text-dim);max-width:66ch}
+  .tenet b{color:var(--text)}
 </style>
 </head>
 <body>
@@ -59,7 +79,7 @@
 <div class="wrap">
   <header class="hero">
     <p class="eyebrow">Инженерная автоматизация</p>
-    <h1>Расчёт → армирование → чертежи, без ручного переноса между программами</h1>
+    <h1>Расчёт → армирование в Revit → чертежи, без ручного переноса между программами</h1>
     <p class="lede">StructOS напрямую связывает ЛИРА-САПР, Tekla Structures, Revit, AutoCAD и IDEA StatiCa:
       читает усилия и подобранные сечения из расчёта, строит геометрию и оформляет КЖ/КМ-чертежи —
       без экспорта в промежуточные форматы и без ручного дублирования данных.</p>
@@ -83,8 +103,8 @@
         <p>Чтение и построение чертежей, оси, блоки, сопоставление со сметой и КМ.</p></div>
       <div class="module"><h3>IDEA StatiCa <span class="tag">узлы</span></h3>
         <p>Проверка узловых соединений (CBFEM) по усилиям из расчёта.</p></div>
-      <div class="module"><h3>Нормативы <span class="tag">СП РК / ГОСТ</span></h3>
-        <p>Поиск и применение норм СП РК, ГОСТ, Eurocode прямо в расчётном и проверочном цикле.</p></div>
+      <div class="module"><h3>Нормативы <span class="tag">по странам</span></h3>
+        <p>СП РК (Казахстан), ГОСТ (СНГ), Eurocode (ЕС) — норматив всегда с указанием страны, потому что требования у каждой страны свои.</p></div>
     </div>
   </section>
 
@@ -96,6 +116,122 @@
       <div class="step"><span class="n">2</span><h3>Сопоставление</h3><p>Марки элементов ЛИРА связываются с объектами Tekla — балки, колонны, плиты.</p></div>
       <div class="step"><span class="n">3</span><h3>Построение в Tekla</h3><p>Геометрия, профили и армирование создаются через Open API, in-process.</p></div>
       <div class="step"><span class="n">4</span><h3>КМ-чертежи</h3><p>Спецификации, развёртки, оформление по стандарту — на выходе готовый комплект КМ.</p></div>
+    </div>
+  </section>
+
+  <section id="mechanism">
+    <h2>Как это устроено</h2>
+    <p class="section-note">StructOS.exe работает полностью на компьютере клиента. За пределы уходит только по четырём условным каналам — пятого пути нет.</p>
+
+    <figure>
+      <div class="diagram-frame">
+        <svg viewBox="0 0 980 520" role="img" aria-label="StructOS общается с AI-клиентом через MCP и с CAD-программами через COM — полностью локально. К GitHub уходит только по четырём условным каналам.">
+          <defs>
+            <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"></path>
+            </marker>
+            <marker id="ah-accent" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 Z" fill="var(--accent)"></path>
+            </marker>
+          </defs>
+
+          <rect x="30" y="46" width="590" height="440" rx="10" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="3 4"></rect>
+          <text x="52" y="34" font-size="12" letter-spacing="0.06em" fill="var(--text-dim)">КОМПЬЮТЕР КЛИЕНТА · PRIVATE</text>
+
+          <rect x="60" y="90" width="220" height="78" rx="7" fill="var(--bg-panel)" stroke="var(--border)" stroke-width="1.5"></rect>
+          <text x="170" y="122" text-anchor="middle" font-weight="600" font-size="14" fill="var(--text)">AI-клиент</text>
+          <text x="170" y="142" text-anchor="middle" font-size="11" fill="var(--text-dim)">Claude Code · Codex · Cursor</text>
+          <text x="170" y="158" text-anchor="middle" font-size="10.5" fill="var(--text-dim)">(свой аккаунт клиента)</text>
+
+          <rect x="340" y="90" width="240" height="78" rx="7" fill="var(--local-dim)" stroke="var(--local)" stroke-width="2"></rect>
+          <text x="460" y="122" text-anchor="middle" font-weight="700" font-size="14" fill="var(--text)">StructOS.exe</text>
+          <text x="460" y="142" text-anchor="middle" font-size="11" fill="var(--text-dim)">342 инструмента · скомпилирован</text>
+          <text x="460" y="158" text-anchor="middle" font-size="10.5" fill="var(--text-dim)">код private, исходников нет</text>
+
+          <path d="M280,129 H332" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ah)"></path>
+          <path d="M332,140 H280" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ah)"></path>
+          <text x="306" y="112" text-anchor="middle" font-size="10.5" fill="var(--text-dim)">MCP</text>
+          <text x="306" y="158" text-anchor="middle" font-size="9.5" fill="var(--text-dim)">stdio</text>
+
+          <rect x="340" y="220" width="240" height="90" rx="7" fill="var(--bg-panel)" stroke="var(--border)" stroke-width="1.5"></rect>
+          <text x="460" y="252" text-anchor="middle" font-weight="600" font-size="14" fill="var(--text)">ЛИРА · Tekla · AutoCAD</text>
+          <text x="460" y="270" text-anchor="middle" font-weight="600" font-size="14" fill="var(--text)">Revit · IDEA StatiCa</text>
+          <text x="460" y="292" text-anchor="middle" font-size="10.5" fill="var(--text-dim)">открыты на компьютере клиента</text>
+
+          <path d="M472,168 V212" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ah)"></path>
+          <path d="M448,212 V168" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ah)"></path>
+          <text x="586" y="192" text-anchor="end" font-size="10.5" fill="var(--text-dim)">COM / Open API</text>
+
+          <rect x="60" y="230" width="220" height="80" rx="7" fill="var(--bg)" stroke="var(--border)" stroke-width="1.5"></rect>
+          <text x="170" y="260" text-anchor="middle" font-weight="600" font-size="13.5" fill="var(--text)">Локальный лог</text>
+          <text x="170" y="278" text-anchor="middle" font-size="10.5" fill="var(--text-dim)">mcp_audit.jsonl</text>
+          <text x="170" y="296" text-anchor="middle" font-size="10" fill="var(--text-dim)">каждый вызов, только на диске</text>
+
+          <path d="M280,120 H310 V255 H282" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ah)"></path>
+          <text x="290" y="188" font-size="9.5" fill="var(--text-dim)">пишет</text>
+
+          <text x="60" y="345" font-size="10.5" fill="var(--text-dim)">Файлы моделей (.lir, .db1, .ifc) никогда не покидают эту границу.</text>
+
+          <rect x="700" y="70" width="240" height="400" rx="10" fill="var(--bg-panel)" stroke="var(--border)" stroke-width="1.5"></rect>
+          <text x="820" y="98" text-anchor="middle" font-weight="600" font-size="12" letter-spacing="0.04em" fill="var(--text)">GITHUB · PUBLIC</text>
+          <line x1="716" y1="110" x2="924" y2="110" stroke="var(--border)" stroke-width="1"></line>
+          <text x="820" y="132" text-anchor="middle" font-size="12.5" fill="var(--text-dim)">StructOS-mcp-releases</text>
+          <text x="820" y="150" text-anchor="middle" font-size="10" fill="var(--text-dim)">Issues · Releases</text>
+          <text x="820" y="185" text-anchor="middle" font-size="10" fill="var(--text-dim)">(исходного кода здесь нет)</text>
+
+          <path d="M620,120 C 660,140 668,150 696,168" stroke="var(--accent)" stroke-width="1.6" fill="none" stroke-dasharray="4 4" marker-end="url(#ah-accent)"></path>
+          <text x="628" y="212" font-size="10.5" fill="var(--accent)">1 · баг-репорт</text>
+
+          <path d="M620,150 C 655,205 665,225 696,248" stroke="var(--accent)" stroke-width="1.6" fill="none" stroke-dasharray="4 4" marker-end="url(#ah-accent)"></path>
+          <text x="628" y="275" font-size="10.5" fill="var(--accent)">2 · запрос функции</text>
+
+          <path d="M280,280 C 500,340 560,330 696,328" stroke="var(--accent)" stroke-width="1.6" fill="none" stroke-dasharray="4 4" marker-end="url(#ah-accent)"></path>
+          <text x="500" y="358" text-anchor="middle" font-size="10.5" fill="var(--accent)">3 · contribution (телеметрия)</text>
+
+          <path d="M460,486 C 460,470 560,420 696,404" stroke="var(--accent)" stroke-width="1.6" fill="none" stroke-dasharray="4 4" marker-end="url(#ah-accent)"></path>
+          <text x="460" y="502" text-anchor="middle" font-size="10.5" fill="var(--accent)">4 · update-check</text>
+        </svg>
+      </div>
+      <figcaption>StructOS.exe общается с AI-клиентом (MCP) и с CAD-программами (COM) прямо на компьютере клиента — полностью локально.
+        К GitHub уходит только по четырём пунктирным линиям, каждая на своих условиях.</figcaption>
+    </figure>
+
+    <div class="legend">
+      <span class="sw"><span class="dot" style="background:var(--local)"></span>полностью локально</span>
+      <span class="sw"><span class="dot" style="background:var(--accent)"></span>пересекает границу — условно</span>
+    </div>
+
+    <div class="channels">
+      <div class="channel">
+        <span class="num">01 · Баг-репорт</span>
+        <h3>structos_report_bug</h3>
+        <p>Собирает ошибку из локального лога, маскирует пути/email/ключи.</p>
+        <span class="gate">confirm=True + человек жмёт Submit</span>
+      </div>
+      <div class="channel">
+        <span class="num">02 · Запрос функции</span>
+        <h3>structos_request_feature</h3>
+        <p>Готовит GitHub Issue из "мне нужна программа X".</p>
+        <span class="gate">confirm=True + человек жмёт Submit</span>
+      </div>
+      <div class="channel">
+        <span class="num">03 · Contribution</span>
+        <h3>contrib.flush()</h3>
+        <p>Только цифры: какой инструмент сколько раз ошибся, какой профиль не распознан. Ни кода, ни модели.</p>
+        <span class="gate">разовое согласие заранее, по умолчанию выключено</span>
+      </div>
+      <div class="channel">
+        <span class="num">04 · Update-check</span>
+        <h3>update_check</h3>
+        <p>Спрашивает только "есть ли новая версия". Установка — отдельный, проверенный шаг.</p>
+        <span class="gate">один запрос в день, без данных клиента</span>
+      </div>
+    </div>
+
+    <div class="tenet">
+      <p><b>Почему именно так:</b> протокол MCP вообще не передаёт серверу историю переписки — StructOS не может
+        прочитать диалог, даже если бы захотел. А каждый из четырёх каналов сначала <b>показывает человеку</b>,
+        что будет отправлено, и только потом, с явного разрешения, пересекает границу.</p>
     </div>
   </section>
 
